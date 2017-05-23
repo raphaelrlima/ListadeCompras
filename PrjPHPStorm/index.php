@@ -5,12 +5,17 @@
  * Date: 17/05/2017
  * Time: 05:01
  */
+require_once ('DBConfig.php');
+$db = new DBConfig();
+?>
+
+<!DOCTYPE html>
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<link rel="stylesheet" href=>
-<link rel="stylesheet" href="table.css">
-<link rel="stylesheet" href="CSS.css">
+<link rel="stylesheet" href="CSS/pagInicial/navbar.css">
+<link rel="stylesheet" href="CSS/pagInicial/table.css">
+<link rel="stylesheet" href="CSS/pagInicial/pagInicial.css">
 </head>
 <body>
 <div id="logo">
@@ -20,9 +25,9 @@ Logo/Fonte Legal
 <div id="navbar">
 
 <ul>
-<li><a href="#">In�cio</a></li>
+<li><a href="index.php">Inicio</a></li>
 <li><a href="#">Relat�rios</a></li>
-<li><a href="pagLogin.html">LOGIN</a></li>
+<li><a href="login.php">LOGIN</a></li>
 
 </ul>
 </div>
@@ -31,9 +36,9 @@ Logo/Fonte Legal
 <h1>Bem Vindo ao estoque de casa !</h1>
 <table>
 <tr>
-<td><img src="carrinho.jpg"></td>
-<td><h3>O novo sistema que ir� revolucionar a sua casa !!!!!! � isso mesmo que voce ouviu !! N�o precisa mais anotar nada em Papel, � isso mesmo que voce ouviu !!
-Registre suas compras e gerencie os produtos de sua casa. � s� aqui na Estoque de Casa !</h3></td>
+<td><img src="IMG/carrinho.jpg"></td>
+<td><h3>O novo sistema que ir� revolucionar a sua casa !!!!!! � isso mesmo que voce leu !! N�o precisa mais anotar nada em Papel, � isso mesmo que voce leu !!
+Registre suas compras e gerencie os produtos de sua casa. � s� aqui na Lista de Compras !</h3></td>
 </tr>
 </table>
 </div>
@@ -57,6 +62,10 @@ Registre suas compras e gerencie os produtos de sua casa. � s� aqui na Estoq
   <div class="tbl-content">
     <table cellpadding="0" cellspacing="0" border="0">
       <tbody>
+      <?php
+
+    $db->selectProd();
+      ?>
         <tr>
           <td>Arroz</td>
           <td>5</td>
@@ -67,12 +76,13 @@ Registre suas compras e gerencie os produtos de sua casa. � s� aqui na Estoq
       </tbody>
     </table>
   </div>
-<button onclick="window.location.href='form.html'">Adicionar Novo Produto</button>
-<input type="button" align="right" name="botao-ok" value="Salvar Altera��es">
+<button onclick="window.location.href=`addForm.php'">Adicionar Novo Produto</button>
+<input type="button" align="right" name="botao-ok" value="Salvar Alteracoes">
 </section>
 
 
 
 </body>
 </html>
+
 
