@@ -12,7 +12,7 @@
     <title>Pag Login</title>
     <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
     <meta http-equiv="content-type" content="text/html; charset=utf-8"/>
-    <link href="login.css" rel="stylesheet"/>
+    <link href="CSS/login/login.css" rel="stylesheet"/>
 
 </head>
 <body>
@@ -37,6 +37,6 @@
     </div>
 </div>
 <script src='http://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js'></script>
-<script src="login.js"></script>
+<script src="JS/login.js"></script>
 </body>
 </html>

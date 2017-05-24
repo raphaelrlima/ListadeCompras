@@ -26,7 +26,7 @@ Logo/Fonte Legal
 
 <ul>
 <li><a href="index.php">Inicio</a></li>
-<li><a href="#">Relat�rios</a></li>
+<li><a href="#">Relatorios</a></li>
 <li><a href="login.php">LOGIN</a></li>
 
 </ul>
@@ -50,8 +50,9 @@ Registre suas compras e gerencie os produtos de sua casa. � s� aqui na Lista
     <table cellpadding="0" cellspacing="0" border="0">
       <thead>
         <tr>
+            <th>Selecione</th>
           <th>Nome</th>
-	  <th>Quantidade</th>
+	      <th>Quantidade</th>
           <th>Tipo</th>
           <th>Medida</th>
           <th>Preco</th>
@@ -62,17 +63,10 @@ Registre suas compras e gerencie os produtos de sua casa. � s� aqui na Lista
   <div class="tbl-content">
     <table cellpadding="0" cellspacing="0" border="0">
       <tbody>
-      <?php
 
-    $db->selectProd();
-      ?>
-        <tr>
-          <td>Arroz</td>
-          <td>5</td>
-          <td>Comida</td>
-          <td>KG</td>
-	  <td>$11.00</td>
-        </tr>
+        <?php
+        $db->selectProd();
+        ?>
       </tbody>
     </table>
   </div>
