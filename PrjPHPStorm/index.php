@@ -7,6 +7,7 @@
  */
 require_once ('DBConfig.php');
 $db = new DBConfig();
+#include("config.php");
 ?>
 
 <!DOCTYPE html>
@@ -63,14 +64,13 @@ Registre suas compras e gerencie os produtos de sua casa. � s� aqui na Lista
   <div class="tbl-content">
     <table cellpadding="0" cellspacing="0" border="0">
       <tbody>
-
         <?php
         $db->selectProd();
         ?>
       </tbody>
     </table>
   </div>
-<button onclick="window.location.href=`addForm.php'">Adicionar Novo Produto</button>
+<a href="addForm.php">Adicionar Novo Produto</a>
 <input type="button" align="right" name="botao-ok" value="Salvar Alteracoes">
 </section>
 

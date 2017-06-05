@@ -84,6 +84,47 @@ class DBConfig
             }
             }
 
+    /**
+     *Criar usuário
+     */
+    public function criarUsuario(){
+        try{
+
+            $nmeUsuario= $_POST['nmeUsuario'];
+            $lgnUsuario= $_POST['lgnUsuario'];
+            $pwdUsuario= $_POST['pwdUsuario'];
+            $emlUsuario= $_POST['emlUsuario'];
+
+            $exists=0;
+            $result= $dbh->query("SELECT lgn_usuario FROM tb_usuario WHERE lgn_usuario = '$nmeUsuario' LIMIT 1");
+            if ($result->num_rows == 1) {
+                $exists = 1;
+                $result = $dbh->query("SELECT eml_usuario from tb_usuario WHERE eml_usuario = '$emlUsuario' LIMIT 1");
+                if ($result->num_rows == 1) $exists = 2;
+            } else {
+                $result = $dbh->query("SELECT eml_usuario from tb_usuario WHERE eml_usuario = '$emlUsuario' LIMIT 1");
+                if ($result->num_rows == 1) $exists = 3;
+            }
+
+            if ($exists == 1) echo "<p>Username already exists!</p>";
+            else if ($exists == 2) echo "<p>Username and Email already exists!</p>";
+            else if ($exists == 3) echo "<p>Email already exists!</p>";
+            else {
+                $sql = "INSERT INTO tb_usuario (nme_usuario, lgn_usuario, pwd_usuario, eml_usuario) VALUES ('$nmeUsuario','$lgnUsuario','$pwdUsuario','$emlUsuario')";
+
+                if($dbh->query($sql)){
+                    echo "<p>Usuário Inserido com Sucesso</p>";
+                }else{
+                    echo "<p>MySQL ERRO no {$dbh->errno} : {$dbh->error}</p>";
+                    exit();
+                }
+            }
+        }
+        catch ( PDOException $e){
+
+            echo 'Error: ' . $e->getMessage();
+        }
+    }
 
 
 
