@@ -31,65 +31,129 @@ Logo/Fonte Legal
 
 	<img id="top" src="IMG/top.png" alt="">
 	<div id="form_container">
+        <?php
 
-		<h1><a>Adicionar Produtos</a></h1>
-		<form id="form_31520" class="appnitro"  method="post" action="">
-					<div class="form_description">
-			<h2>Adicionar Produtos</h2>
-			<p>Insira aqui as informacoes do novo produto
-</p>
-		</div>
-			<ul >
+        require_once ('config.php');
+        if(!isset($_POST['submit'])){
+        ?>
+        <h1><a>Adicionar Produtos</a></h1>
+        <form id="form_31520" class="appnitro" method="post" action="">
+            <div class="form_description">
+                <h2>Adicionar Produtos</h2>
+                <p>Insira aqui as informacoes do novo produto
+                </p>
+            </div>
+            <ul>
 
-					<li id="li_1" >
-		<label class="description" for="element_1">Nome </label>
-		<div>
-			<input id="element_1" name="element_1" class="element text medium" type="text" maxlength="255" value=""/>
-		</div>
-		</li>		<li id="li_3" >
-		<label class="description" for="element_3">Quantidade
- </label>
-		<div>
-			<input id="element_3" name="element_3" class="element text medium" type="text" maxlength="255" value=""/>
-		</div>
-		</li>		<li id="li_5" >
-		<label class="description" for="element_5">Tipo </label>
-		<div>
-		<select class="element select medium" id="element_5" name="element_5">
-<option value="" selected="selected"></option>
-<option value="Comida" >Comida</option>
-<option value="Bebida" >Bebida</option>
-<option value="Limpeza" >Limpeza</option>
-<option value="Eletronico" >Eletronico</option>
-<option value="Acessorios" >Acessorios</option>
-		</select>
-		</div>
-		</li>		<li id="li_4" >
-		<label class="description" for="element_4">Medida </label>
-		<span>
-			<input id="element_4_1" name="element_4" class="element radio" type="radio" value="Quilo" />
+                <li id="li_1">
+                    <label class="description" for="nmeProduto">Nome </label>
+                    <div>
+                        <input id="nme_produto" name="nmeProduto" class="element text medium" type="text" maxlength="255"
+                               value=""/>
+                    </div>
+                </li>
+                <li id="li_3">
+                    <label class="description" for="qtdProduto">Quantidade
+                    </label>
+                    <div>
+                        <input id="qtdProduto" name="qtdProduto" class="element text medium" type="text" maxlength="255"
+                               value=""/>
+                    </div>
+                </li>
+                <li id="li_5">
+                    <label class="description" for="tpoProduto">Tipo </label>
+                    <div>
+                        <select class="element select medium" id="tpoProduto" name="tpoProduto">
+                            <option value="" selected="selected">Selecione</option>
+                            <option value="Comida">Comida</option>
+                            <option value="Bebida">Bebida</option>
+                            <option value="Limpeza">Limpeza</option>
+                            <option value="Eletronico">Eletronico</option>
+                            <option value="Acessorios">Acessorios</option>
+                        </select>
+                    </div>
+                </li>
+                <li id="li_4">
+                    <label class="description" for="element_4">Medida </label>
+                    <span>
+			<input id="element_4_1" name="medProduto" class="element radio" type="radio" value="Kg"/>
 <label class="choice" for="element_4_1">Quilo</label>
-<input id="element_4_2" name="element_4" class="element radio" type="radio" value="Litro" />
+<input id="element_4_2" name="medProduto" class="element radio" type="radio" value="Litro"/>
 <label class="choice" for="element_4_2">Litro</label>
-<input id="element_4_3" name="element_4" class="element radio" type="radio" value="Pacote" />
+<input id="element_4_3" name="medProduto" class="element radio" type="radio" value="Pcte"/>
 <label class="choice" for="element_4_3">Pacote</label>
-<input id="element_4_4" name="element_4" class="element radio" type="radio" value="Unidade" />
+<input id="element_4_4" name="medProduto" class="element radio" type="radio" value="UN"/>
 <label class="choice" for="element_4_4">Unidade</label>
 		</span>
-		</li>		<li id="li_2" >
-		<label class="description" for="element_2">Preco </label>
-		<span class="symbol">$</span>
-		<span>
-			<input id="element_2_1" name="element_2_1" class="element text currency" size="10" value="" type="text" /> .
+                </li>
+                <li id="li_2">
+                    <label class="description" for="element_2">Preco </label>
+                    <span class="symbol">$</span>
+                    <span>
+			<input id="element_2_1" name="prcProduto1" class="element text currency" size="10" value="" type="text"/> .
 			<label for="element_2_1">Reais</label>
 		</span>
-	<span>
-	<input id="element_2_2" name="element_2_2" class="element text" size="2" maxlength="2" value="" type="text" />
+                    <span>
+	<input id="element_2_2" name="prcProduto2" class="element text" size="2" maxlength="2" value="" type="text"/>
 	<label for="element_2_2">Centavos</label></span></li>
-<li class="buttons">
-<input type="hidden" name="form_id" value="31520" />
-<input id="saveForm" class="button_text" type="submit" name="adicionar" value="Adicionar" />
-</li></ul>
+                <li class="buttons">
+                    <input type="hidden" name="form_id" value="31520"/>
+                    <input id="saveForm" class="button_text" type="submit" name="adicionar" value="Adicionar"/>
+                </li>
+            </ul>
+            <?php
+            }else{
+                $dbh = new mysqli(server, user, pass, database);
+                # check connection
+                if ($dbh->connect_errno) {
+                    echo "<p>MySQL error no {$dbh->connect_errno} : {$dbh->connect_error}</p>";
+                    exit();
+                }
+
+                $nmeProduto=$_POST['nmeProduto'];
+                $qtdProduto=$_POST['qtdProduto'];
+                $tpoProduto=$_POST['tpoProduto'];
+                $medProduto=$_POST['medProduto'];
+                $prcProduto=$_POST['prcProduto1'];
+                $prcProduto2=$_POST['prcProduto2'];
+
+                $exists=0;
+                $result= $dbh->query("SELECT nme_produto FROM tb_produto WHERE nme_produto = '$nmeProduto' LIMIT 1");
+                if ($result->num_rows == 1) {
+                    $exists = 1;
+                    $result = $dbh->query("SELECT qtd_produto from tb_produto WHERE qtd_produto = '$qtdProduto' LIMIT 1");
+                    if ($result->num_rows == 1)
+                        $exists = 2;
+                    $result = $dbh->query("SELECT tpo_produto from tb_produto WHERE tpo_produto = '$tpoProduto' LIMIT 1");
+                    if ($result->num_rows == 1)
+                        $exists = 3;
+                    $result = $dbh->query("SELECT med_produto from tb_produto WHERE med_produto = '$medProduto' LIMIT 1");
+                    if ($result->num_rows == 1)
+                        $exists = 4;
+                    $result = $dbh->query("SELECT prc_produto from tb_produto WHERE prc_produto = '$prcProduto' LIMIT 1");
+                    if ($result->num_rows == 1)
+                        $exists = 5;
+                }
+
+                if($exists== 5){
+                    echo "<p>O produto que deseja inserir já existe!</p><a href='addForm.php'>Retornar para criacao</a>";
+                }else{
+                    $sql = "INSERT INTO tb_produto (nme_produto, qtd_produto, tpo_produto, med_produto, prc_produto) VALUES ('$nmeProduto','$qtdProduto','$tpoProduto','$medProduto','$prcProduto,$prcProduto2')";
+
+                    if($dbh->query($sql)){
+                        echo "<p>Produto Inserido com Sucesso</p>";
+                    }else{
+                        echo "<p>MySQL ERRO no {$dbh->errno} : {$dbh->error}</p>";
+                        exit();
+                    }
+
+                }
+
+            }
+            ?>
+
+
+
 	</form>
 	</div>
 	<img id="bottom" src="IMG/bottom.png" alt="">

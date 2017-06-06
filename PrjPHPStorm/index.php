@@ -4,10 +4,15 @@
  * User: rapha
  * Date: 17/05/2017
  * Time: 05:01
+ * <a href="addForm.php">Adicionar Novo Produto</a>
  */
-require_once ('DBConfig.php');
-$db = new DBConfig();
+require_once ('config.php');
 #include("config.php");
+$dbh= new mysqli(server, user, pass, database);
+if ($dbh->connect_errno) {
+    echo "<p>MySQL error no {$dbh->connect_errno} : {$dbh->connect_error}</p>";
+    exit();
+}
 ?>
 
 <!DOCTYPE html>
@@ -65,13 +70,34 @@ Registre suas compras e gerencie os produtos de sua casa. � s� aqui na Lista
     <table cellpadding="0" cellspacing="0" border="0">
       <tbody>
         <?php
-        $db->selectProd();
+
+        $sql = "SELECT * FROM `tb_produto`";
+
+
+        $produtos = $dbh->query($sql);
+
+        foreach ($produtos as $produto) {
+            echo "<tr>".
+                "<td>"."<input type='checkbox' name='check_list[]' value='". $produto['idt_produto']."'"."></td>".
+                "<td>" . $produto['nme_produto']."</td>".
+                "<td>".$produto['qtd_produto']."</td>".
+                "<td>".$produto['tpo_produto']."</td>".
+                "<td>".$produto['med_produto']."</td>".
+                "<td>".$produto['prc_produto']."</td>".
+                "</tr>";
+        }
         ?>
       </tbody>
     </table>
   </div>
-<a href="addForm.php">Adicionar Novo Produto</a>
-<input type="button" align="right" name="botao-ok" value="Salvar Alteracoes">
+    <button id="btnForm">Adicionar novo Produto</button>
+    <script>
+        var btn = document.getElementById('btnForm');
+        btn.addEventListener('click', function () {
+            document.location.href = 'addForm.php';
+        })
+    </script>
+<input type="submit" align="right" name="botao-ok" value="Salvar Alteracoes">
 </section>
 
 
