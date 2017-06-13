@@ -34,6 +34,12 @@ Logo/Fonte Legal
         <?php
 
         require_once ('config.php');
+        $dbh = new mysqli(server, user, pass, database);
+        # check connection
+        if ($dbh->connect_errno) {
+            echo "<p>MySQL error no {$dbh->connect_errno} : {$dbh->connect_error}</p>";
+            exit();
+        }
         if(!isset($_POST['submit'])){
         ?>
         <h1><a>Adicionar Produtos</a></h1>
@@ -75,15 +81,16 @@ Logo/Fonte Legal
                 </li>
                 <li id="li_4">
                     <label class="description" for="element_4">Medida </label>
-                    <div>
-                        <select class="element select medium" id="medProduto" name="medProduto">
-                            <option value="" selected="selected">Selecione</option>
-                            <option value="Quilo">Quilo</option>
-                            <option value="Litro">Litro</option>
-                            <option value="Pacote">Pacote</option>
-                            <option value="Unidade">Unidade</option>
-                        </select>
-                    </div>
+                    <span>
+			<input id="element_4_1" name="medProduto" class="element radio" type="radio" value="Kg"/>
+<label class="choice" for="element_4_1">Quilo</label>
+<input id="element_4_2" name="medProduto" class="element radio" type="radio" value="Litro"/>
+<label class="choice" for="element_4_2">Litro</label>
+<input id="element_4_3" name="medProduto" class="element radio" type="radio" value="Pcte"/>
+<label class="choice" for="element_4_3">Pacote</label>
+<input id="element_4_4" name="medProduto" class="element radio" type="radio" value="UN"/>
+<label class="choice" for="element_4_4">Unidade</label>
+		</span>
                 </li>
                 <li id="li_2">
                     <label class="description" for="element_2">Preco </label>
@@ -96,17 +103,12 @@ Logo/Fonte Legal
 	<input id="element_2_2" name="prcProduto2" class="element text" size="2" maxlength="2" value="" type="text"/>
 	<label for="element_2_2">Centavos</label></span></li>
                 <li class="buttons">
-                    <input id="saveForm" class="button_text" type="submit" name="submit" value="Adicionar"/>
+                    <input type="hidden" name="form_id" value="31520"/>
+                    <input id="saveForm" class="button_text" type="submit" name="adicionar" value="Adicionar"/>
                 </li>
             </ul>
             <?php
             }else{
-                $dbh = new mysqli(server, user, pass, database);
-                # check connection
-                if ($dbh->connect_errno) {
-                    echo "<p>MySQL error no {$dbh->connect_errno} : {$dbh->connect_error}</p>";
-                    exit();
-                }
 
                 $nmeProduto=$_POST['nmeProduto'];
                 $qtdProduto=$_POST['qtdProduto'];
@@ -114,8 +116,7 @@ Logo/Fonte Legal
                 $medProduto=$_POST['medProduto'];
                 $prcProduto=$_POST['prcProduto1'];
                 $prcProduto2=$_POST['prcProduto2'];
-                $centavos= $prcProduto2/100;
-                $prcProduto3= $prcProduto + $centavos;
+                $medProduto1= 'Unidade';
 
                 $exists=0;
                 $result= $dbh->query("SELECT nme_produto FROM tb_produto WHERE nme_produto = '$nmeProduto' LIMIT 1");
@@ -133,11 +134,11 @@ Logo/Fonte Legal
                     $result = $dbh->query("SELECT prc_produto from tb_produto WHERE prc_produto = '$prcProduto' LIMIT 1");
                     if ($result->num_rows == 1)
                         $exists = $exists+1;
-                    if($exists== 5){
-                        echo "<p>O produto que deseja inserir j√° existe!</p><a href='addForm.php'>Retornar para criacao</a>";
-                    }
                 }else{
-                        $sql = "INSERT INTO tb_produto (nme_produto, qtd_produto, tpo_produto, med_produto, prc_produto) VALUES ('$nmeProduto','$qtdProduto','$tpoProduto','$medProduto','$prcProduto3')";
+                    if($exists== 5){
+                        echo "<p>O produto que deseja inserir j· existe!</p><a href='addForm.php'>Retornar para criacao</a>";
+                    }else{
+                        $sql = "INSERT INTO tb_produto (nme_produto, qtd_produto, tpo_produto, med_produto, prc_produto) VALUES ('$nmeProduto','$qtdProduto','$tpoProduto','$medProduto1','$prcProduto')";
 
                         if($dbh->query($sql)){
                             echo "<p>Produto Inserido com Sucesso</p>";
@@ -147,8 +148,13 @@ Logo/Fonte Legal
                         }
 
                     }
+
+                }
+
             }
             ?>
+
+
 
 	</form>
 	</div>
