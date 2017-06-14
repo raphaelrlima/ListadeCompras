@@ -59,7 +59,7 @@
                 $emlUsuario= $_POST['emlUsuario'];
 
                 $exists=0;
-                $result= $dbh->query("SELECT lgn_usuario FROM tb_usuario WHERE lgn_usuario = '$nmeUsuario' LIMIT 1");
+                $result= $dbh->query("SELECT lgn_usuario FROM tb_usuario WHERE lgn_usuario = '$lgnUsuario' LIMIT 1");
                 if ($result->num_rows == 1) {
                     $exists = 1;
                     $result = $dbh->query("SELECT eml_usuario from tb_usuario WHERE eml_usuario = '$emlUsuario' LIMIT 1");
@@ -69,14 +69,14 @@
                     if ($result->num_rows == 1) $exists = 3;
                 }
 
-                if ($exists == 1) echo "<p>Nome de Usuario já existe!</p><a href='login.php/#'>Retornar para criacao</a>";
-                else if ($exists == 2) echo "<p>Nome de Usuario e Email ja existem!</p><a href='login.php/#'>Retornar para criacao</a>";
-                else if ($exists == 3) echo "<p>Email ja existe!</p></br><a href='login.php/#'>Retornar para criacao</a>";
+                if ($exists == 1) echo "<p>Nome de Usuario já existe!</p><a href='login.php'>Retornar para criacao</a>";
+                else if ($exists == 2) echo "<p>Nome de Usuario e Email ja existem!</p><a href='login.php'>Retornar para criacao</a>";
+                else if ($exists == 3) echo "<p>Email ja existe!</p></br><a href='login.php'>Retornar para criacao</a>";
                 else {
                     $sql = "INSERT INTO tb_usuario (nme_usuario, lgn_usuario, pwd_usuario, eml_usuario) VALUES ('$nmeUsuario','$lgnUsuario','$pwdUsuario','$emlUsuario')";
 
                     if($dbh->query($sql)){
-                        echo "<p>Usuário Inserido com Sucesso</p>";
+                        echo "<p>Usuário Inserido com Sucesso</p><a href='index.php'>Retornar para o inicio</a>\"";
                     }else{
                         echo "<p>MySQL ERRO no {$dbh->errno} : {$dbh->error}</p>";
                         exit();
@@ -87,10 +87,10 @@
 
         </form>
 
-        <form class="login-form">
+        <form action="<?=$_SERVER['PHP_SELF']?>" method="POST" class="login-form">
             <input type="text" placeholder="Login"/>
             <input type="password" placeholder="Senha"/>
-            <button>login</button>
+            <input type="submit" name="submit" value="Logar"/>
             <p class="message">Nao registrado? <a href="#">Crie uma conta</a></p>
         </form>
 

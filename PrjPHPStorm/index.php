@@ -71,7 +71,7 @@ Registre suas compras e gerencie os produtos de sua casa. � s� aqui na Lista
       <tbody>
         <?php
 
-        $sql = "SELECT * FROM `tb_produto`";
+        $sql = "SELECT * FROM `tb_produto` ORDER BY tpo_produto";
 
 
         $produtos = $dbh->query($sql);

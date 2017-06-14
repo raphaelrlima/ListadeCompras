@@ -140,12 +140,13 @@ Logo/Fonte Legal
                         $sql = "INSERT INTO tb_produto (nme_produto, qtd_produto, tpo_produto, med_produto, prc_produto) VALUES ('$nmeProduto','$qtdProduto','$tpoProduto','$medProduto','$prcProduto3')";
 
                         if($dbh->query($sql)){
-                            echo "<p>Produto Inserido com Sucesso</p>";
+                            echo "<p>Produto Inserido com Sucesso</p>
+                                   <a href='addForm.php'>Adicionar novo produto</a></br>
+                                   <a href='index.php'>Retornar ao menu</a>";
                         }else{
                             echo "<p>MySQL ERRO no {$dbh->errno} : {$dbh->error}</p>";
                             exit();
                         }
-
                     }
             }
             ?>
