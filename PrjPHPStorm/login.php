@@ -33,7 +33,7 @@
 <div class="login-page">
     <div class="form">
         <?php
-        require_once ('config.php');
+        require('config.php');
         if (!isset($_POST['submit'])) {
         ?>
         <form action="<?=$_SERVER['PHP_SELF']?>" method="POST" class="register-form">
@@ -84,16 +84,45 @@
                 }
             }
             ?>
-
         </form>
+        <div>
+        <?php
+        session_start();
+        require('config.php');
+        if (isset($_POST['lgn_usuario']) and isset($_POST['pwd_usuario'])){
+        ?>
+            <form action="<?= $_SERVER['PHP_SELF'] ?>" method="POST" class="login-form">
+                <input type="text" name="lgn_usuario" placeholder="Login"/>
+                <input type="password" name="pwd_usuario" placeholder="Senha"/>
+                <input type="submit" name="submit" value="Logar"/>
+                <p class="message">Nao registrado? <a href="#">Crie uma conta</a></p>
+                <?php
+                }else {
 
-        <form action="<?=$_SERVER['PHP_SELF']?>" method="POST" class="login-form">
-            <input type="text" placeholder="Login"/>
-            <input type="password" placeholder="Senha"/>
-            <input type="submit" name="submit" value="Logar"/>
-            <p class="message">Nao registrado? <a href="#">Crie uma conta</a></p>
+                    $dbh = new mysqli(server, user, pass, database);
+                    # check connection
+                    if ($dbh->connect_errno) {
+                        echo "<p>MySQL error no {$dbh->connect_errno} : {$dbh->connect_error}</p>";
+                        exit();
+                    }
+
+                $lgn_usuario = $_POST['lgn_usuario'];
+                $pwd_usuario = $_POST['pwd_usuario'];
+
+                $query = "SELECT * FROM tb_usuario WHERE lgn_usuario = '$lgn_usuario' AND pwd_usuario = '$pwd_usuario'";
+                $resultado = $dbh->query($query) or die(mysqli_error($dbh));
+                $count = mysqli_num_rows($resultado);
+                if($count == 1){
+                    $_SESSION['lgn_usuario'] = $lgn_usuario;
+                    header("location: index.php");
+                }else{
+                $fmsg = "Login ou senha incorretos.";
+                }
+                }
+
+            ?>
         </form>
-
+        </div>
     </div>
 </div>
 <script src='http://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js'></script>

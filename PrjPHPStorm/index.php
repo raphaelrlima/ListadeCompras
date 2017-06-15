@@ -7,6 +7,7 @@
  * <a href="addForm.php">Adicionar Novo Produto</a>
  */
 require_once ('config.php');
+include('login.php');
 #include("config.php");
 $dbh= new mysqli(server, user, pass, database);
 if ($dbh->connect_errno) {
@@ -34,8 +35,9 @@ Logo/Fonte Legal
 <li><a href="index.php">Inicio</a></li>
 <li><a href="#">Relatorios</a></li>
 <li><a href="login.php">LOGIN</a></li>
-
 </ul>
+    <b id="welcome">Welcome : <i><?php echo $lgn_usuario; ?></i></b>
+    <b id="logout"><a href="logout.php">Log Out</a></b>
 </div>
 <section>
 <div class="img-info">
