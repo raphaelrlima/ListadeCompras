@@ -33,7 +33,6 @@ require('config.php');
 <div class="login-page">
     <div class="form">
         <?php
-
         if (!isset($_POST['criar'])) {
         ?>
         <form action="<?=$_SERVER['PHP_SELF']?>" method="POST" class="register-form">
@@ -72,12 +71,12 @@ require('config.php');
                 if ($exists == 1) echo "<p>Nome de Usuario já existe!</p><a href='login.php'>Retornar para criacao</a>";
                 else if ($exists == 2) echo "<p>Nome de Usuario e Email ja existem!</p><a href='login.php'>Retornar para criacao</a>";
                 else if ($exists == 3) echo "<p>Email ja existe!</p></br><a href='login.php'>Retornar para criacao</a>";
-                else if($nmeUsuario || $lgnUsuario || $pwdUsuario || $emlUsuario == "") echo "<p>Campo em branco favor inserir informacao</p><a href='login.php'>Retornar para criacao</a>";
+                else if($nmeUsuario == "" || $lgnUsuario == "" || $pwdUsuario == "" || $emlUsuario == "") echo "<p>Campos em branco favor inserir informacao</p><a href='login.php'>Retornar para criacao</a>";
                 else {
                     $sql = "INSERT INTO tb_usuario (nme_usuario, lgn_usuario, pwd_usuario, eml_usuario) VALUES ('$nmeUsuario','$lgnUsuario','$pwdUsuario','$emlUsuario')";
 
                     if($dbh->query($sql)){
-                        echo "<p>Usuário Inserido com Sucesso</p><a href='index.php'>Retornar para o inicio</a>\"";
+                        echo "<p>Usuário Inserido com Sucesso</p><a href='index.php'>Retornar para o inicio</a>";
                     }else{
                         echo "<p>MySQL ERRO no {$dbh->errno} : {$dbh->error}</p>";
                         exit();
@@ -86,48 +85,49 @@ require('config.php');
             }
             ?>
         </form>
-        <div>
+
             <?php
             if (!isset($_POST['logar'])) {
             ?>
             <form action="<?=$_SERVER['PHP_SELF']?>" method="post" class="login-form">
-                <input type="text" name="username" placeholder="Login"/>
-                <input type="password" name="password" placeholder="Senha"/>
+                <input type="text" name="lgn_usuario" placeholder="Login"/>
+                <input type="password" name="pwd_usuario" placeholder="Senha"/>
                 <input type="submit" name="logar" value="Logar"/>
                 <p class="message">Nao registrado? <a href="#">Crie uma conta</a></p>
                 <span><?php echo $error; ?></span>
 
                 <?php
                 } else {
-
-                    $dbh = new mysqli(server, user, pass, database);
-                    if ($dbh->connect_errno) {
-                        echo "<p>MySQL error no {$dbh->connect_errno} : {$dbh->connect_error}</p>";
+                    $bd = new mysqli(server, user, pass, database);
+                    if ($bd->connect_errno) {
+                        echo "<p>MySQL error no {$bd->connect_errno} : {$bd->connect_error}</p>";
                         exit();
                     }
-                        // Define $username and $password
-                        $username = $_POST['username'];
-                        $password = $_POST['password'];
 
-                        // Verify blank spaces
-                        if ($username || $password == "") {
-                            echo "<p>Campo em branco favor inserir informacao</p><a href='login.php'>Retornar para criacao</a>";
+                    // Define $username and $password
+                    $username = $_POST['lgn_usuario'];
+                    $password = $_POST['pwd_usuario'];
+
+
+                    // Verify blank spaces
+                        if ($username == "" || $password == "") {
+                            echo "<p>Campo em branco favor inserir informacao</p>$username $password<a href='login.php'>Retornar para o login</a>";
                         } else {
                             // SQL query to fetch information of registerd users and finds user match.
+                            $query = "SELECT * FROM tb_usuario WHERE lgn_usuario = '$username' AND pwd_usuario = '$password' LIMIT 1";
+                            $resultado= $bd->query($query);
 
-                            $query = "SELECT * FROM tb_usuario WHERE lgn_usuario = '$username' AND pwd_usuario = '$password'";
-                            $resultado = $dbh->query($query);
-                            if (!$resultado == 1) {
-                                $error = "Nome de usuário ou senha invalido";
+                            if ($resultado->num_rows == 1){
+                                echo "ttestte";
+                                //header("location: index.php");  Redirecting To Other Page
                             } else {
+                                echo "Nome de usuário ou senha invalido";
 
-                                header("location: index.php"); // Redirecting To Other Page
                             }
                         }
                 }
                 ?>
             </form>
-        </div>
     </div>
 </div>
 <script src='http://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js'></script>
