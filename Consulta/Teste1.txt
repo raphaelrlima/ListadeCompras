@@ -10,7 +10,7 @@ require('config.php');
 <!DOCTYPE html>
 <html>
 <head>
-    <title>P√°gina de Login</title>
+    <title>P·gina de Login</title>
     <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
     <meta http-equiv="content-type" content="text/html; charset=utf-8"/>
     <link href="CSS/login/login.css" rel="stylesheet"/>
@@ -69,15 +69,15 @@ require('config.php');
                     if ($result->num_rows == 1) $exists = 3;
                 }
 
-                if ($exists == 1) echo "<p>Nome de Usuario j√° existe!</p><a href='login.php'>Retornar para criacao</a>";
+                if ($exists == 1) echo "<p>Nome de Usuario j· existe!</p><a href='login.php'>Retornar para criacao</a>";
                 else if ($exists == 2) echo "<p>Nome de Usuario e Email ja existem!</p><a href='login.php'>Retornar para criacao</a>";
                 else if ($exists == 3) echo "<p>Email ja existe!</p></br><a href='login.php'>Retornar para criacao</a>";
-                else if($nmeUsuario || $lgnUsuario || $pwdUsuario || $emlUsuario == "") echo "<p>Campo em branco favor inserir informacao</p><a href='login.php'>Retornar para criacao</a>";
+                else if($nmeUsuario || $lgnUsuario || $pwdUsuario || $emlUsuario == "") echo "<p>Campo em branco favor inserir informacao";
                 else {
                     $sql = "INSERT INTO tb_usuario (nme_usuario, lgn_usuario, pwd_usuario, eml_usuario) VALUES ('$nmeUsuario','$lgnUsuario','$pwdUsuario','$emlUsuario')";
 
                     if($dbh->query($sql)){
-                        echo "<p>Usu√°rio Inserido com Sucesso</p><a href='index.php'>Retornar para o inicio</a>\"";
+                        echo "<p>Usu·rio Inserido com Sucesso</p><a href='index.php'>Retornar para o inicio</a>\"";
                     }else{
                         echo "<p>MySQL ERRO no {$dbh->errno} : {$dbh->error}</p>";
                         exit();
@@ -88,7 +88,9 @@ require('config.php');
         </form>
         <div>
             <?php
-            if (!isset($_POST['logar'])) {
+            session_start();
+            $error=''; // Variable To Store Error Message
+            if (isset($_POST['logar'])) {
             ?>
             <form action="<?=$_SERVER['PHP_SELF']?>" method="post" class="login-form">
                 <input type="text" name="username" placeholder="Login"/>
@@ -100,16 +102,25 @@ require('config.php');
                 <?php
                 } else {
 
-                    $dbh = new mysqli(server, user, pass, database);
-                    if ($dbh->connect_errno) {
-                        echo "<p>MySQL error no {$dbh->connect_errno} : {$dbh->connect_error}</p>";
-                        exit();
-                    }
+                    if (isset($_POST['username']) and isset($_POST['password'])) {
                         // Define $username and $password
                         $username = $_POST['username'];
                         $password = $_POST['password'];
+// Establishing Connection with Server by passing server_name, user_id and password as a parameter
 
-                        // Verify blank spaces
+                        $dbh = new mysqli(server, user, pass, database);
+                        if ($dbh->connect_errno) {
+                            echo "<p>MySQL error no {$dbh->connect_errno} : {$dbh->connect_error}</p>";
+                            exit();
+                        }
+// To protect MySQL injection for Security purpose
+                        $username = stripslashes($username);
+                        $password = stripslashes($password);
+                        $username = mysql_real_escape_string($username);
+                        $password = mysql_real_escape_string($password);
+
+// Verify blank spaces
+
                         if ($username || $password == "") {
                             echo "<p>Campo em branco favor inserir informacao</p><a href='login.php'>Retornar para criacao</a>";
                         } else {
@@ -117,15 +128,19 @@ require('config.php');
 
                             $query = "SELECT * FROM tb_usuario WHERE lgn_usuario = '$username' AND pwd_usuario = '$password'";
                             $resultado = $dbh->query($query);
-                            if (!$resultado == 1) {
-                                $error = "Nome de usu√°rio ou senha invalido";
-                            } else {
-
+                            $rows = mysqli_num_rows($resultado);
+                            if ($rows == 1) {
+                                $_SESSION['lgn_usuario'] = $username; // Initializing Session
                                 header("location: index.php"); // Redirecting To Other Page
+                            } else {
+                                $error = "Nome de usu·rio ou senha invalido";
                             }
                         }
+
+                    }
                 }
                 ?>
+
             </form>
         </div>
     </div>

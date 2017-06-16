@@ -15,12 +15,15 @@ if ($dbh->connect_errno) {
     echo "<p>MySQL error no {$dbh->connect_errno} : {$dbh->connect_error}</p>";
     exit();
 }
-session_start();// Starting Session
+if(!isset($_SESSION))
+{
+    session_start();
+} // Starting Session
 // Storing Session
 $user_check=$_SESSION['lgn_usuario'];
 // SQL Query To Fetch Complete Information Of User
 $ses_sql = "SELECT lgn_usuario FROM tb_usuario WHERE lgn_usuario = '$user_check'";
-$row = $ses_sql->fetchAll();
+$row =mysqli_fetch_all($dbh->query($ses_sql));
 $login_session =$row['lgn_usuario'];
 
 if(!isset($login_session)){

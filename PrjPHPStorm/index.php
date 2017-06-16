@@ -7,7 +7,7 @@
  * <a href="addForm.php">Adicionar Novo Produto</a>
  */
 require_once ('config.php');
-include('login.php');
+include ('session.php');
 #include("config.php");
 $dbh= new mysqli(server, user, pass, database);
 if ($dbh->connect_errno) {
@@ -18,7 +18,7 @@ if ($dbh->connect_errno) {
 
 <!DOCTYPE html>
 <html>
-<head>
+<head><title>Lista de Compras</title>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <link rel="stylesheet" href="CSS/pagInicial/navbar.css">
 <link rel="stylesheet" href="CSS/pagInicial/table.css">
@@ -52,7 +52,7 @@ Registre suas compras e gerencie os produtos de sua casa. � s� aqui na Lista
 </div>
 </section>
 
-<section>
+<form action="" method="post" name="sel">
   <h3>Lista de Compras</h3>
   <div class="tbl-header">
     <table cellpadding="0" cellspacing="0" border="0">
@@ -69,15 +69,11 @@ Registre suas compras e gerencie os produtos de sua casa. � s� aqui na Lista
     </table>
   </div>
   <div class="tbl-content">
-    <table cellpadding="0" cellspacing="0" border="0">
+      <table cellpadding="0" cellspacing="0" border="0">
       <tbody>
         <?php
-
-        $sql = "SELECT * FROM `tb_produto` ORDER BY tpo_produto";
-
-
+        $sql = "SELECT * FROM `tb_produto` ORDER BY tpo_produto, nme_produto ASC";
         $produtos = $dbh->query($sql);
-
         foreach ($produtos as $produto) {
             echo "<tr>".
                 "<td>"."<input type='checkbox' name='check_list[]' value='". $produto['idt_produto']."'"."></td>".
@@ -93,6 +89,7 @@ Registre suas compras e gerencie os produtos de sua casa. � s� aqui na Lista
     </table>
   </div>
     <button id="btnForm">Adicionar novo Produto</button>
+</form>
     <script>
         var btn = document.getElementById('btnForm');
         btn.addEventListener('click', function () {
@@ -101,9 +98,6 @@ Registre suas compras e gerencie os produtos de sua casa. � s� aqui na Lista
     </script>
 <input type="submit" align="right" name="botao-ok" value="Salvar Alteracoes">
 </section>
-
-
-
 </body>
 </html>
 
