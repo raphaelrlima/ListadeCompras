@@ -7,7 +7,10 @@
  * <a href="addForm.php">Adicionar Novo Produto</a>
  */
 require_once ('config.php');
-include ('session.php');
+if(!isset($_SESSION))
+{
+    session_start();
+}
 #include("config.php");
 $dbh= new mysqli(server, user, pass, database);
 if ($dbh->connect_errno) {
@@ -19,84 +22,100 @@ if ($dbh->connect_errno) {
 <!DOCTYPE html>
 <html>
 <head><title>Lista de Compras</title>
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<link rel="stylesheet" href="CSS/pagInicial/navbar.css">
-<link rel="stylesheet" href="CSS/pagInicial/table.css">
-<link rel="stylesheet" href="CSS/pagInicial/pagInicial.css">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <link rel="stylesheet" href="CSS/pagInicial/navbar.css">
+    <link rel="stylesheet" href="CSS/pagInicial/table.css">
+    <link rel="stylesheet" href="CSS/pagInicial/pagInicial.css">
 </head>
 <body>
 <div id="logo">
     Estoque de Casa<br/>
-Logo/Fonte Legal
+    Logo/Fonte Legal
 </div>
 <div id="navbar">
 
-<ul>
-<li><a href="index.php">Inicio</a></li>
-<li><a href="#">Relatorios</a></li>
-<li><a href="login.php">LOGIN</a></li>
-</ul>
-    <b id="welcome">Welcome : <i><?php echo $lgn_usuario; ?></i></b>
+    <ul>
+        <li><a href="index.php">Inicio</a></li>
+        <li><a href="#">Relatorios</a></li>
+        <li><a href="login.php">LOGIN</a></li>
+    </ul>
+    <b id="bemvindo">Bem Vindo : <i><?php echo $_SESSION['nme_usuario']; ?></i></b>
     <b id="logout"><a href="logout.php">Log Out</a></b>
 </div>
 <section>
-<div class="img-info">
-<h1>Bem Vindo ao estoque de casa !</h1>
-<table>
-<tr>
-<td><img src="IMG/carrinho.jpg"></td>
-<td><h3>O novo sistema que ir� revolucionar a sua casa !!!!!! � isso mesmo que voce leu !! N�o precisa mais anotar nada em Papel, � isso mesmo que voce leu !!
-Registre suas compras e gerencie os produtos de sua casa. � s� aqui na Lista de Compras !</h3></td>
-</tr>
-</table>
-</div>
+    <div class="img-info">
+        <h1>Bem Vindo ao estoque de casa !</h1>
+        <table>
+            <tr>
+                <td><img src="IMG/carrinho.jpg"></td>
+                <td><h3>O novo sistema que ir� revolucionar a sua casa !!!!!! � isso mesmo que voce leu !! N�o precisa mais anotar nada em Papel, � isso mesmo que voce leu !!
+                        Registre suas compras e gerencie os produtos de sua casa. � s� aqui na Lista de Compras !</h3></td>
+            </tr>
+        </table>
+    </div>
 </section>
 
-<form action="" method="post" name="sel">
-  <h3>Lista de Compras</h3>
-  <div class="tbl-header">
-    <table cellpadding="0" cellspacing="0" border="0">
-      <thead>
-        <tr>
-            <th>Selecione</th>
-          <th>Nome</th>
-	      <th>Quantidade</th>
-          <th>Tipo</th>
-          <th>Medida</th>
-          <th>Preco</th>
-        </tr>
-      </thead>
-    </table>
-  </div>
-  <div class="tbl-content">
-      <table cellpadding="0" cellspacing="0" border="0">
-      <tbody>
+<form action="" method="get" name="sel">
+    <h3>Lista de Compras</h3>
+    <div class="tbl-header">
+        <table cellpadding="0" cellspacing="0" border="0">
+            <thead>
+            <tr>
+                <th>Selecione</th>
+                <th>Nome</th>
+                <th>Quantidade</th>
+                <th>Tipo</th>
+                <th>Medida</th>
+                <th>Preco</th>
+            </tr>
+            </thead>
+        </table>
+    </div>
+    <div class="tbl-content">
+        <table cellpadding="0" cellspacing="0" border="0">
+            <tbody>
+            <?php
+            $sql = "SELECT * FROM `tb_produto` ORDER BY tpo_produto, nme_produto ASC";
+            $produtos = $dbh->query($sql);
+            foreach ($produtos as $produto) {
+                echo "<tr>".
+                    "<td>"."<input type='checkbox' name='check_list[]' id='check_list' value='". $produto['idt_produto']."'"."></td>".
+                    "<td>" . $produto['nme_produto']."</td>".
+                    "<td>".$produto['qtd_produto']."</td>".
+                    "<td>".$produto['tpo_produto']."</td>".
+                    "<td>".$produto['med_produto']."</td>".
+                    "<td>".$produto['prc_produto']."</td>".
+                    "</tr>";
+            }
+            ?>
+            </tbody>
+        </table>
         <?php
-        $sql = "SELECT * FROM `tb_produto` ORDER BY tpo_produto, nme_produto ASC";
-        $produtos = $dbh->query($sql);
-        foreach ($produtos as $produto) {
-            echo "<tr>".
-                "<td>"."<input type='checkbox' name='check_list[]' value='". $produto['idt_produto']."'"."></td>".
-                "<td>" . $produto['nme_produto']."</td>".
-                "<td>".$produto['qtd_produto']."</td>".
-                "<td>".$produto['tpo_produto']."</td>".
-                "<td>".$produto['med_produto']."</td>".
-                "<td>".$produto['prc_produto']."</td>".
-                "</tr>";
+        if (!isset($_POST['check_list'])){
+            $idtsel = $_POST['check_list'];
+            $data = date('dd/mm/Y');
+            $idtusuario = $_SESSION['idt_usuario'];
+
+            foreach ($idtsel as $produtoidt){
+                $sqlsel = "INSERT INTO ta_relatorio(dta_relatorio, cod_usuario, cod_produto) VALUES ('$data','$idtusuario','$produtoidt')";
+                $dbh->query($sqlsel);
+            }
+            echo "Lista de Compras criada!";
+        }else{
+            echo "Selecione um ou mais produtos!";
         }
         ?>
-      </tbody>
-    </table>
-  </div>
+    </div>
+    <input type="submit" align="right" name="sel" value="Salvar Alteracoes">
     <button id="btnForm">Adicionar novo Produto</button>
 </form>
-    <script>
-        var btn = document.getElementById('btnForm');
-        btn.addEventListener('click', function () {
-            document.location.href = 'addForm.php';
-        })
-    </script>
-<input type="submit" align="right" name="botao-ok" value="Salvar Alteracoes">
+<script>
+    var btn = document.getElementById('btnForm');
+    btn.addEventListener('click', function () {
+        document.location.href = 'addForm.php';
+    })
+</script>
+
 </section>
 </body>
 </html>

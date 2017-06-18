@@ -87,6 +87,7 @@ require('config.php');
         </form>
 
             <?php
+            session_start();
             if (!isset($_POST['logar'])) {
             ?>
             <form action="<?=$_SERVER['PHP_SELF']?>" method="post" class="login-form">
@@ -111,15 +112,19 @@ require('config.php');
 
                     // Verify blank spaces
                         if ($username == "" || $password == "") {
-                            echo "<p>Campo em branco favor inserir informacao</p>$username $password<a href='login.php'>Retornar para o login</a>";
+                            echo "<p>Campo em branco favor inserir informacao</p><a href='login.php'>Retornar para o login</a>";
                         } else {
                             // SQL query to fetch information of registerd users and finds user match.
                             $query = "SELECT * FROM tb_usuario WHERE lgn_usuario = '$username' AND pwd_usuario = '$password' LIMIT 1";
                             $resultado= $bd->query($query);
 
                             if ($resultado->num_rows == 1){
-                                echo "ttestte";
-                                //header("location: index.php");  Redirecting To Other Page
+                              foreach ($resultado as $usuario){
+                                  $_SESSION['idt_usuario'] = $usuario['idt_usuario'];
+                                   $_SESSION['lgn_usuario'] = $usuario['lgn_usuario'];
+                                   $_SESSION['nme_usuario'] = $usuario['nme_usuario'];
+                               }
+                               header("location: index.php");  //Redirecting To Other Page
                             } else {
                                 echo "Nome de usuário ou senha invalido";
 
