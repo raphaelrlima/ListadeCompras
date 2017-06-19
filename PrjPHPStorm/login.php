@@ -123,6 +123,7 @@ require('config.php');
                                   $_SESSION['idt_usuario'] = $usuario['idt_usuario'];
                                    $_SESSION['lgn_usuario'] = $usuario['lgn_usuario'];
                                    $_SESSION['nme_usuario'] = $usuario['nme_usuario'];
+                                   $_SESSION['loggedin'] = true;
                                }
                                header("location: index.php");  //Redirecting To Other Page
                             } else {

@@ -4,7 +4,15 @@
  * User: rapha
  * Date: 17/05/2017
  * Time: 05:01
- * <a href="addForm.php">Adicionar Novo Produto</a>
+ *
+ *
+ * <button id="btnForm">Adicionar novo Produto</button>
+<script>
+var btn = document.getElementById('btnForm');
+btn.addEventListener('click', function () {
+document.location.href = 'addForm.php';
+})
+</script>
  */
 require_once ('config.php');
 if(!isset($_SESSION))
@@ -26,6 +34,7 @@ if ($dbh->connect_errno) {
     <link rel="stylesheet" href="CSS/pagInicial/navbar.css">
     <link rel="stylesheet" href="CSS/pagInicial/table.css">
     <link rel="stylesheet" href="CSS/pagInicial/pagInicial.css">
+    <script src="js/jquery1.3.2/jquery.min.js"></script>
 </head>
 <body>
 <div id="logo">
@@ -55,9 +64,12 @@ if ($dbh->connect_errno) {
     </div>
 </section>
 
-<form action="" method="get" name="sel">
+<form action="" method="post" name="sel">
     <h3>Lista de Compras</h3>
+    <input type="submit" align="right" name="sel" value="Salvar Alteracoes">
+    <a href="addForm.php">Adicionar Novo Produto</a>
     <div class="tbl-header">
+
         <table cellpadding="0" cellspacing="0" border="0">
             <thead>
             <tr>
@@ -90,32 +102,36 @@ if ($dbh->connect_errno) {
             ?>
             </tbody>
         </table>
-        <?php
-        if (!isset($_POST['check_list'])){
-            $idtsel = $_POST['check_list'];
-            $data = date('dd/mm/Y');
-            $idtusuario = $_SESSION['idt_usuario'];
 
-            foreach ($idtsel as $produtoidt){
-                $sqlsel = "INSERT INTO ta_relatorio(dta_relatorio, cod_usuario, cod_produto) VALUES ('$data','$idtusuario','$produtoidt')";
-                $dbh->query($sqlsel);
-            }
-            echo "Lista de Compras criada!";
-        }else{
-            echo "Selecione um ou mais produtos!";
+        <?php
+        if (isset($_POST['sel'])){
+                if (empty($_POST['check_list'])){
+                    $message = "Selecione um ou mais produtos";
+                    echo "<script type='text/javascript'>alert('$message');</script>";
+                }else {
+
+                    if ($_SESSION['loggedin'] == true) {
+
+                        $idtsel = $_POST['check_list'];
+                        $data = date('Y-m-d');
+                        $idtusuario = $_SESSION['idt_usuario'];
+
+                        foreach ($idtsel as $produtoidt) {
+                            $sqlsel = "INSERT INTO ta_relatorio(dta_relatorio, cod_usuario, cod_produto) VALUES ('$data','$idtusuario','$produtoidt')";
+                            $dbh->query($sqlsel);
+                        }
+                        $mensagem = "Lista de compras criada com sucesso!";
+                        echo "<script type='text/javascript'>alert('$mensagem');</script>";
+
+
+                    } else {
+                        header("location: login.php");  //Redirecting To Other Page
+                    }
+                }
         }
         ?>
     </div>
-    <input type="submit" align="right" name="sel" value="Salvar Alteracoes">
-    <button id="btnForm">Adicionar novo Produto</button>
 </form>
-<script>
-    var btn = document.getElementById('btnForm');
-    btn.addEventListener('click', function () {
-        document.location.href = 'addForm.php';
-    })
-</script>
-
 </section>
 </body>
 </html>

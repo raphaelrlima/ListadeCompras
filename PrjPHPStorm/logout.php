@@ -7,8 +7,10 @@
  */
 
 session_start();
+$_SESSION['loggedin']= false;
 if(session_destroy()) // Destroying All Sessions
 {
     header("Location: login.php"); // Redirecting To Home Page
+
 }
 ?>
