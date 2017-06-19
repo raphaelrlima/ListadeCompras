@@ -24,7 +24,7 @@ if ($_SESSION['loggedin'] == false) {
 
 <!DOCTYPE html>
 <html>
-<head><title>Lista de Compras</title>
+<head><title>Relatorios Lista de Compras</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <link rel="stylesheet" href="CSS/pagInicial/navbar.css">
     <link rel="stylesheet" href="CSS/pagInicial/table.css">

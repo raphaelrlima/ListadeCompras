@@ -5,7 +5,7 @@
  * Date: 17/05/2017
  * Time: 05:01
  *
- *<a href="addForm.php">Adicionar Novo Produto</a>
+ *
  * <button id="btnForm">Adicionar novo Produto</button>
 <script>
 var btn = document.getElementById('btnForm');
@@ -34,7 +34,7 @@ if ($dbh->connect_errno) {
     <link rel="stylesheet" href="CSS/pagInicial/navbar.css">
     <link rel="stylesheet" href="CSS/pagInicial/table.css">
     <link rel="stylesheet" href="CSS/pagInicial/pagInicial.css">
-    <script src="js/jquery1.3.2/jquery.min.js"></script>
+    <script src="JS/jquery.min.js"></script>
 </head>
 <body>
 <div id="logo">
@@ -65,14 +65,8 @@ if ($dbh->connect_errno) {
 <section>
 <form action="" method="post" name="sel">
     <h3>Lista de Compras</h3>
-    <input type="submit" align="right" name="sel" value="Salvar Alteracoes">
-    <button id="btnForm">Adicionar novo Produto</button>
-    <script>
-        var btn = document.getElementById('btnForm');
-        btn.addEventListener('click', function () {
-            document.location.href = 'addForm.php';
-        })
-    </script>
+    <input type="submit" align="right" name="sel" value="Salvar Lista de Compras">
+    <input type="button" onclick="location.href='https://listadecompras.000webhostapp.com/addForm.php';" value="Adicionar novo Produto">
     <div class="tbl-header">
 
         <table cellpadding="0" cellspacing="0" border="0">

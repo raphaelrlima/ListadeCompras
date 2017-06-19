@@ -75,7 +75,8 @@ require('config.php');
                     $sql = "INSERT INTO tb_usuario (nme_usuario, lgn_usuario, pwd_usuario, eml_usuario) VALUES ('$nmeUsuario','$lgnUsuario','$pwdUsuario','$emlUsuario')";
 
                     if($dbh->query($sql)){
-                        echo "<p>Usuário Inserido com Sucesso</p><a href='index.php'>Retornar para o inicio</a>";
+                        $mensagem = "Usuário criado com sucesso!";
+                        echo "<script type='text/javascript'>alert('$mensagem');</script>";
                     }else{
                         echo "<p>MySQL ERRO no {$dbh->errno} : {$dbh->error}</p>";
                         exit();
@@ -126,7 +127,7 @@ require('config.php');
                                }
                                header("location: index.php");  //Redirecting To Other Page
                             } else {
-                                echo "Nome de usuário ou senha invalido";
+                                echo "<p>Nome de usuário ou senha invalido</p><a href='login.php'>Retornar para o login</a>";
 
                             }
                         }
@@ -135,7 +136,7 @@ require('config.php');
             </form>
     </div>
 </div>
-<script src='http://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js'></script>
+<script src='JS/jquery.min.js'></script>
 <script src="JS/login.js"></script>
 </body>
 </html>

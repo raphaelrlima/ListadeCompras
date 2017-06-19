@@ -116,6 +116,7 @@
                 $centavos= $prcProduto2/100;
                 $prcProduto3= $prcProduto + $centavos;
 
+
                 $exists=0;
                 $result= $dbh->query("SELECT nme_produto FROM tb_produto WHERE nme_produto = '$nmeProduto' LIMIT 1");
                 if ($result->num_rows == 1) {
@@ -135,18 +136,27 @@
                     if($exists== 5){
                         echo "<p>O produto que deseja inserir já existe!</p><a href='addForm.php'>Retornar para criacao</a>";
                     }
-                }else{
+
+
+                }else {
+
+                    if ($nmeProduto == "" || $qtdProduto == "" || $tpoProduto == "" || $tpoProduto == "Selecione" || $medProduto == "" || $medProduto == "Selecione" || $prcProduto == "" || $prcProduto2 == "") {
+                        echo "<p>Campos em Branco, favor inserir!</p><a href='addForm.php'>Retornar para criacao</a>";
+                    } else {
+
+
                         $sql = "INSERT INTO tb_produto (nme_produto, qtd_produto, tpo_produto, med_produto, prc_produto) VALUES ('$nmeProduto','$qtdProduto','$tpoProduto','$medProduto','$prcProduto3')";
 
-                        if($dbh->query($sql)){
+                        if ($dbh->query($sql)) {
                             echo "<p>Produto Inserido com Sucesso</p>
                                    <a href='addForm.php'>Adicionar novo produto</a></br>
                                    <a href='index.php'>Retornar ao menu</a>";
-                        }else{
+                        } else {
                             echo "<p>MySQL ERRO no {$dbh->errno} : {$dbh->error}</p>";
                             exit();
                         }
                     }
+                }
             }
             ?>
 
