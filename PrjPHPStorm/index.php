@@ -66,9 +66,9 @@ if ($dbh->connect_errno) {
 <form action="" method="post" name="sel">
     <h3>Lista de Compras</h3>
     <input type="submit" align="right" name="sel" value="Salvar Alteracoes">
-    <button id="btnForm">Adicionar novo Produto</button>
+    <button id="formBtn">Adicionar novo Produto</button>
     <script>
-        var btn = document.getElementById('btnForm');
+        var formBtn = document.getElementById('formBtn');
         btn.addEventListener('click', function () {
             document.location.href = 'addForm.php';
         })
