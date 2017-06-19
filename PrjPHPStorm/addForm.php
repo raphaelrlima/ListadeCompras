@@ -18,13 +18,12 @@
 <body>
 
 <div id="logo">
-    Lista de Compras<br/>
-Logo/Fonte Legal
+    Lista de Compras
 </div>
 <div id="navbar">
 <ul>
 <li><a href="index.php">Inicio</a></li>
-<li><a href="#">Relatorios</a></li>
+<li><a href="report.php">Relatorios</a></li>
 <li><a href="login.php">LOGIN</a></li>
 </ul>
 </div>

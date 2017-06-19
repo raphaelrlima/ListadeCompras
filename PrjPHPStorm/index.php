@@ -5,7 +5,7 @@
  * Date: 17/05/2017
  * Time: 05:01
  *
- *
+ *<a href="addForm.php">Adicionar Novo Produto</a>
  * <button id="btnForm">Adicionar novo Produto</button>
 <script>
 var btn = document.getElementById('btnForm');
@@ -38,14 +38,13 @@ if ($dbh->connect_errno) {
 </head>
 <body>
 <div id="logo">
-    Estoque de Casa<br/>
-    Logo/Fonte Legal
+    Lista de Compras
 </div>
 <div id="navbar">
 
     <ul>
         <li><a href="index.php">Inicio</a></li>
-        <li><a href="#">Relatorios</a></li>
+        <li><a href="report.php">Relatorios</a></li>
         <li><a href="login.php">LOGIN</a></li>
     </ul>
     <b id="bemvindo">Bem Vindo : <i><?php echo $_SESSION['nme_usuario']; ?></i></b>
@@ -56,18 +55,24 @@ if ($dbh->connect_errno) {
         <h1>Bem Vindo ao estoque de casa !</h1>
         <table>
             <tr>
-                <td><img src="IMG/carrinho.jpg"></td>
+                <td><img src="IMG/carrinho1.jpg"></td>
                 <td><h3>O novo sistema que ir� revolucionar a sua casa !!!!!! � isso mesmo que voce leu !! N�o precisa mais anotar nada em Papel, � isso mesmo que voce leu !!
                         Registre suas compras e gerencie os produtos de sua casa. � s� aqui na Lista de Compras !</h3></td>
             </tr>
         </table>
     </div>
 </section>
-
+<section>
 <form action="" method="post" name="sel">
     <h3>Lista de Compras</h3>
     <input type="submit" align="right" name="sel" value="Salvar Alteracoes">
-    <a href="addForm.php">Adicionar Novo Produto</a>
+    <button id="btnForm">Adicionar novo Produto</button>
+    <script>
+        var btn = document.getElementById('btnForm');
+        btn.addEventListener('click', function () {
+            document.location.href = 'addForm.php';
+        })
+    </script>
     <div class="tbl-header">
 
         <table cellpadding="0" cellspacing="0" border="0">
@@ -122,7 +127,6 @@ if ($dbh->connect_errno) {
                         }
                         $mensagem = "Lista de compras criada com sucesso!";
                         echo "<script type='text/javascript'>alert('$mensagem');</script>";
-
 
                     } else {
                         header("location: login.php");  //Redirecting To Other Page
